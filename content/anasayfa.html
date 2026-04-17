@@ -1,0 +1,215 @@
+﻿<section class="home-hero">
+  <div class="hero-track" id="heroTrack">
+    <article class="hero-slide active" style="--bg-image: url('../images/anasayfa.jpg');"></article>
+    <article class="hero-slide" style="--bg-image: url('../images/welcome4.jpg');"></article>
+    <article class="hero-slide" style="--bg-image: url('../images/kizkalesi1.jpg');"></article>
+  </div>
+
+  <div class="hero-layer">
+    <div class="hero-content reveal">
+      <span class="eyebrow" style="color:#ffffff;">Kaizen Otel • Erdemli</span>
+      <h1>Akdeniz Kıyısında Güvenli ve Konforlu Konaklama</h1>
+      <p>
+        Kaizen Otel; merkezi konumu, profesyonel ekibi ve düzenli hizmet standardı ile
+        tatil ve iş seyahatlerinizde planlı bir konaklama deneyimi sunar.
+      </p>
+      <a class="hero-location-link" href="https://maps.app.goo.gl/XEKLUmPLtryvuJWS8" target="_blank" rel="noopener">
+        Konum: Erdemli • Mersin
+      </a>
+      <div class="hero-actions">
+        <a class="btn btn-light" href="rezervasyon.html">Rezervasyon Oluştur</a>
+        <a class="btn btn-ghost" href="#odalar" data-route="odalar">Odaları İncele</a>
+      </div>
+      <div class="hero-dots" id="heroDots">
+        <button type="button" class="hero-dot active" data-slide="0" aria-label="1. görsel"></button>
+        <button type="button" class="hero-dot" data-slide="1" aria-label="2. görsel"></button>
+        <button type="button" class="hero-dot" data-slide="2" aria-label="3. görsel"></button>
+      </div>
+    </div>
+
+    <form class="hero-float reveal quick-res-form" id="homeQuickReservation" novalidate>
+      <div class="float-grid">
+        <label class="float-cell date-cell">
+          <span>Giriş</span>
+          <input type="date" id="quickCheckIn" required>
+        </label>
+        <label class="float-cell date-cell">
+          <span>Çıkış</span>
+          <input type="date" id="quickCheckOut" required>
+        </label>
+        <label class="float-cell">
+          <span>Yetişkin</span>
+          <select id="quickAdults">
+            <option value="1">1 Kişi</option>
+            <option value="2" selected>2 Kişi</option>
+            <option value="3">3 Kişi</option>
+          </select>
+        </label>
+        <label class="float-cell">
+          <span>Oda Tipi</span>
+          <select id="quickRoomType">
+            <option value="Tek Kişilik Oda">Tek Kişilik Oda</option>
+            <option value="2 Kişilik Oda" selected>2 Kişilik Oda</option>
+            <option value="3 Kişilik Oda">3 Kişilik Oda</option>
+          </select>
+        </label>
+        <button class="float-btn" type="submit">Rezervasyona Geç</button>
+      </div>
+      <p class="quick-res-note" id="quickResNote" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <section class="section-block reveal">
+    <div class="section-head">
+      <span class="eyebrow">Kaizen Deneyimi</span>
+      <h2>Erdemli'de Planlı, Şeffaf ve Profesyonel Konaklama</h2>
+      <p>
+        Kaizen Otel web deneyimini; hızlı karar vermeyi kolaylaştıran açık bilgiler,
+        net fiyat yapısı ve doğrudan rezervasyon akışı üzerine kurduk.
+      </p>
+    </div>
+
+    <div class="split-grid">
+      <article class="card soft">
+        <h3>Konaklama Yaklaşımımız</h3>
+        <ul class="info-list">
+          <li>Her konaklama öncesi kontrol listesiyle standart temizlik süreci uygulanır.</li>
+          <li>Lokasyon, plaj erişimi ve şehir içi ulaşım dengesi sayesinde zaman kazandırır.</li>
+          <li>Tek, çift ve aile konaklaması için net oda grupları sunulur.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Hızlı Bilgi</h3>
+        <ul class="info-list">
+          <li>Konum: Akdeniz Mah. Hilal Sok. No:1 Erdemli / Mersin</li>
+          <li>İletişim: +90 501 002 6633</li>
+          <li>E-posta: kaizenotel@gmail.com</li>
+          <li>Hizmet: 7/24 resepsiyon, kahvaltı, Wi-Fi, park</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="section-block reveal">
+    <div class="section-head">
+      <span class="eyebrow">Odalar</span>
+      <h2>Öne Çıkan Oda Grupları</h2>
+      <p>Detaylı karşılaştırma ve tüm oda bilgileri için Odalar sayfasını ziyaret edebilirsiniz.</p>
+    </div>
+
+    <div class="room-groups">
+      <article class="room-group-card">
+        <img src="assets/images/standartt.jpg" alt="Tek kişilik oda" loading="lazy">
+        <div class="room-group-body">
+          <span class="room-group-tag">Essential</span>
+          <h3>Tek Kişilik Oda</h3>
+          <p>İş seyahati ve kısa konaklamalar için kompakt çözüm.</p>
+          <div class="room-group-foot">
+            <strong>2.000 TL / gece</strong>
+            <a class="room-link" href="#odalar" data-route="odalar">Detaylar</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="room-group-card">
+        <img src="assets/images/double.jpg" alt="İki kişilik oda" loading="lazy">
+        <div class="room-group-body">
+          <span class="room-group-tag">Comfort</span>
+          <h3>2 Kişilik Oda</h3>
+          <p>Standart tatil planları için dengeli alan ve konfor.</p>
+          <div class="room-group-foot">
+            <strong>3.500 TL / gece</strong>
+            <a class="room-link" href="#odalar" data-route="odalar">Detaylar</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="room-group-card">
+        <img src="assets/images/twinsuit.jpeg" alt="Üç kişilik oda" loading="lazy">
+        <div class="room-group-body">
+          <span class="room-group-tag">Family</span>
+          <h3>3 Kişilik Oda</h3>
+          <p>Aile ve küçük gruplar için geniş yerleşim düzeni.</p>
+          <div class="room-group-foot">
+            <strong>5.000 TL / gece</strong>
+            <a class="room-link" href="#odalar" data-route="odalar">Detaylar</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section-block reveal">
+    <div class="values-grid">
+      <article class="value-box"><strong>23 Oda Kapasitesi</strong><p>Dengeli doluluk ve düzenli operasyon.</p></article>
+      <article class="value-box"><strong>2 Dakika Sahil</strong><p>Yürüme mesafesinde kıyı erişimi.</p></article>
+      <article class="value-box"><strong>7/24 Destek</strong><p>Her an ulaşılabilir resepsiyon iletişimi.</p></article>
+    </div>
+  </section>
+
+  <section class="section-block reveal">
+    <div class="section-head">
+      <span class="eyebrow">Videolar</span>
+      <h2>Mersin ve Kaizen Otel Tanıtım Videoları</h2>
+      <p>Dikey video formatına uygun olarak videoları alt alta sunduk.</p>
+    </div>
+    <div class="video-grid">
+      <article class="video-card video-feature">
+        <div class="video-frame">
+          <video controls playsinline preload="metadata" poster="assets/images/slider3.jpeg">
+            <source src="assets/video/reels.mp4" type="video/mp4">
+            Tarayıcınız video etiketini desteklemiyor.
+          </video>
+        </div>
+        <div class="video-body video-side-text">
+          <h3>Kaizen Otel Reels Tanıtımı</h3>
+          <p>Oda yapısı, servis kalitesi ve tesis detaylarını öne çıkaran kısa kesitler.</p>
+          <ul class="info-list">
+            <li>Resepsiyon, oda ve ortak alanlardan kısa çekimler</li>
+            <li>Konfor odaklı iç mekan detayları</li>
+            <li>Rezervasyon öncesi hızlı genel bakış</li>
+          </ul>
+        </div>
+      </article>
+      <article class="video-card video-feature">
+        <div class="video-frame">
+          <video controls playsinline preload="metadata" poster="assets/images/kizkalesi1.jpg">
+            <source src="assets/video/tanıtım.mp4" type="video/mp4">
+            Tarayıcınız video etiketini desteklemiyor.
+          </video>
+        </div>
+        <div class="video-body video-side-text">
+          <h3>Mersin Tanıtım Videosu</h3>
+          <p>Bölgenin sahil hattı, gezi rotaları ve şehir atmosferini videoda keşfedin.</p>
+          <ul class="info-list">
+            <li>Sahil şeridi ve gezi noktalarından manzaralar</li>
+            <li>Tatil planı için şehir atmosferini önceden görme</li>
+            <li>Konaklama planını destekleyen bölgesel içerik</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section-block reveal">
+    <div class="section-head">
+      <span class="eyebrow">Misafir Yorumları</span>
+      <h2>Konaklayan Misafirlerden</h2>
+    </div>
+    <div class="testimonial-grid" id="reviewMount"></div>
+  </section>
+
+  <section class="section-block reveal">
+    <div class="cta-band">
+      <div>
+        <h3>Konaklamanı Hemen Planla</h3>
+        <p>Tarihine uygun oda tipini seç ve rezervasyonunu doğrudan oluştur.</p>
+      </div>
+      <a class="btn btn-gold" href="rezervasyon.html">Şimdi Rezervasyon Yap</a>
+    </div>
+  </section>
+</div>
+
+

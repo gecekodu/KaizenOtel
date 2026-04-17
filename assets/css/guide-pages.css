@@ -1,0 +1,171 @@
+.guide-page {
+  --guide-overlay: linear-gradient(130deg, rgba(5, 19, 33, 0.78) 0%, rgba(6, 30, 47, 0.68) 42%, rgba(6, 17, 30, 0.8) 100%);
+  min-height: 100vh;
+  background-image: var(--guide-overlay), var(--guide-bg);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.guide-page.guide-travel {
+  --guide-accent: #0a5d8f;
+  --guide-soft: rgba(10, 93, 143, 0.12);
+  --guide-bg: url("../images/gezibackground.jpg");
+}
+
+.guide-page.guide-restaurants {
+  --guide-accent: #1f9d5d;
+  --guide-soft: rgba(31, 157, 93, 0.12);
+  --guide-bg: url("../images/arkkaplan.jpg");
+}
+
+.guide-main {
+  width: min(100% - 2rem, var(--container));
+  margin-inline: auto;
+  padding: 6.9rem 0 2.8rem;
+}
+
+.guide-hero {
+  text-align: center;
+  margin-bottom: 1.1rem;
+}
+
+.guide-hero .eyebrow {
+  color: #d8ebfb;
+}
+
+.guide-title {
+  color: #ffffff;
+  margin-bottom: 0.8rem;
+}
+
+.guide-intro {
+  max-width: 880px;
+  margin: 0 auto;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1.2rem;
+  box-shadow: 0 20px 35px rgba(6, 16, 27, 0.2);
+}
+
+.guide-intro p {
+  margin: 0;
+  color: #193247;
+  font-size: 1.02rem;
+}
+
+.guide-intro em {
+  color: var(--guide-accent);
+  font-style: normal;
+  font-weight: 700;
+}
+
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.guide-card {
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 16px 28px rgba(6, 20, 33, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.guide-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 34px rgba(6, 20, 33, 0.26);
+}
+
+.guide-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.guide-body {
+  padding: 0.9rem;
+}
+
+.guide-body h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.22rem;
+  color: var(--guide-accent);
+}
+
+.guide-body p {
+  margin: 0;
+  color: #29435b;
+}
+
+.guide-body p + p {
+  margin-top: 0.5rem;
+}
+
+.guide-meta,
+.guide-address {
+  border-radius: 10px;
+  background: var(--guide-soft);
+  padding: 0.5rem 0.6rem;
+  font-size: 0.9rem;
+}
+
+.guide-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.guide-meta strong {
+  color: var(--guide-accent);
+}
+
+.guide-meta span {
+  opacity: 0.6;
+}
+
+.guide-address {
+  font-size: 0.86rem;
+}
+
+.guide-footer {
+  margin-top: 0;
+}
+
+.guide-footer .footer-shell {
+  grid-template-columns: 1fr;
+  text-align: center;
+}
+
+.guide-footer .footer-bottom {
+  justify-content: center;
+}
+
+@media (max-width: 1080px) {
+  .guide-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .guide-page {
+    background-attachment: scroll;
+  }
+
+  .guide-main {
+    padding-top: 6rem;
+  }
+
+  .guide-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .guide-card img {
+    height: 220px;
+  }
+}

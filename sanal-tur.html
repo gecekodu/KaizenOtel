@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sanal Tur | Kaizen Otel</title>
+  <link rel="stylesheet" type="text/css" href="pano/panellum.css">
+  <style>
+    body { background: #f7fafd; font-family: 'Montserrat', Arial, sans-serif; }
+    .pano-container { max-width: 900px; margin: 48px auto; text-align: center; }
+    h1 { color: #2176ae; font-size: 2rem; margin-bottom: 24px; }
+    #panorama { width: 100%; max-width: 800px; height: 500px; margin: 0 auto; border-radius: 16px; box-shadow: 0 2px 24px rgba(33,118,174,0.10); }
+  </style>
+</head>
+<body>
+  <div class="pano-container">
+    <h1>Kaizen Otel Sanal Tur</h1>
+    <div id="panorama"></div>
+  </div>
+  <script type="text/javascript" src="pano/panellum.js"></script>
+  <script>
+    pannellum.viewer('panorama', {
+      "default": {
+        "firstScene": "oda19",
+        "author": "Kaizen Otel"
+      },
+      "scenes": {
+        "oda19": {
+          "type": "equirectangular",
+          "panorama": "pano/gorseller/19_no.jpg",
+          "hotSpots": [
+            { "pitch": 0, "yaw": 90, "type": "scene", "text": "Banyo", "sceneId": "oda19banyo" },
+            { "pitch": 10, "yaw": 180, "type": "scene", "text": "20 No Oda", "sceneId": "oda20" }
+          ]
+        },
+        "oda19banyo": {
+          "type": "equirectangular",
+          "panorama": "pano/gorseller/19_no_banyo.jpg",
+          "hotSpots": [
+            { "pitch": 0, "yaw": -90, "type": "scene", "text": "Oda", "sceneId": "oda19" }
+          ]
+        },
+        "oda20": {
+          "type": "equirectangular",
+          "panorama": "pano/gorseller/20_no.jpg",
+          "hotSpots": [
+            { "pitch": 0, "yaw": 90, "type": "scene", "text": "Banyo", "sceneId": "oda20banyo" },
+            { "pitch": 10, "yaw": 0, "type": "scene", "text": "19 No Oda", "sceneId": "oda19" },
+            { "pitch": 10, "yaw": 180, "type": "scene", "text": "21 No Oda", "sceneId": "oda21" }
+          ]
+        },
+        "oda20banyo": {
+          "type": "equirectangular",
+          "panorama": "pano/gorseller/20_no_banyo.jpg",
+          "hotSpots": [
+            { "pitch": 0, "yaw": -90, "type": "scene", "text": "Oda", "sceneId": "oda20" }
+          ]
+        },
+        "oda21": {
+          "type": "equirectangular",
+          "panorama": "pano/gorseller/21_no.jpg",
+          "hotSpots": [
+            { "pitch": 0, "yaw": 90, "type": "scene", "text": "Banyo", "sceneId": "oda21banyo" },
+            { "pitch": 10, "yaw": 0, "type": "scene", "text": "20 No Oda", "sceneId": "oda20" }
+          ]
+        },
+        "oda21banyo": {
+          "type": "equirectangular",
+          "panorama": "pano/gorseller/21_no_banyo.jpg",
+          "hotSpots": [
+            { "pitch": 0, "yaw": -90, "type": "scene", "text": "Oda", "sceneId": "oda21" }
+          ]
+        },
+        "dismekan": {
+          "type": "equirectangular",
+          "panorama": "pano/gorseller/dis_mekan_hdr.jpg",
+          "hotSpots": [
+            { "pitch": 0, "yaw": 0, "type": "scene", "text": "Resepsiyon", "sceneId": "resepsiyon" }
+          ]
+        },
+        "koridor": {
+          "type": "equirectangular",
+          "panorama": "pano/gorseller/koridor_hdr.jpg",
+          "hotSpots": [
+            { "pitch": 0, "yaw": 0, "type": "scene", "text": "Dış Mekan", "sceneId": "dismekan" }
+          ]
+        },
+        "resepsiyon": {
+          "type": "equirectangular",
+          "panorama": "pano/gorseller/resepsiyon_hdr.jpg",
+          "hotSpots": [
+            { "pitch": 0, "yaw": 0, "type": "scene", "text": "Koridor", "sceneId": "koridor" }
+          ]
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+

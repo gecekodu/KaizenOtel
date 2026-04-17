@@ -1,0 +1,445 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rezervasyon | Kaizen Otel</title>
+  <meta name="description" content="Kaizen Otel rezervasyon sayfası. Giriş-çıkış tarihi, oda tipi ve misafir bilgilerinizi girerek doğrudan rezervasyon talebi oluşturun.">
+  <link rel="icon" href="assets/images/icon.png" sizes="128x128">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="assets/css/app.css">
+  <style>
+    .rez-shell {
+      width: min(100% - 2rem, 1180px);
+      margin-inline: auto;
+      padding: 6.8rem 0 2.5rem;
+    }
+    .rez-hero {
+      border-radius: 20px;
+      overflow: hidden;
+      min-height: 260px;
+      background-image:
+        linear-gradient(120deg, rgba(5, 20, 35, 0.78) 0%, rgba(9, 68, 103, 0.46) 60%, rgba(6, 17, 30, 0.72) 100%),
+        url("assets/images/ikinciarkaplan.jpg");
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      display: grid;
+      align-content: end;
+      padding: 1.3rem;
+      box-shadow: 0 20px 40px rgba(12, 30, 49, 0.16);
+    }
+    .rez-hero p { color: rgba(246, 251, 255, 0.9); max-width: 62ch; }
+    .rez-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .rez-card {
+      border: 1px solid #dbe6f1;
+      background: #fff;
+      border-radius: 18px;
+      padding: 1rem;
+    }
+    .rez-card h2 {
+      margin-bottom: 0.35rem;
+    }
+    .rez-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .field.date-field {
+      position: relative;
+    }
+    .field label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #2f4f67;
+    }
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid #ceddeb;
+      border-radius: 12px;
+      background: #f8fbfe;
+      color: #102233;
+      padding: 0.72rem 0.78rem;
+      font: inherit;
+    }
+    .field.date-field input[type="date"] {
+      color-scheme: light;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      padding-right: 2.5rem;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f9ff 100%);
+    }
+    .field.date-field::after {
+      content: "";
+      position: absolute;
+      right: 0.86rem;
+      top: 2.42rem;
+      width: 18px;
+      height: 18px;
+      pointer-events: none;
+      opacity: 0.72;
+      background: center / contain no-repeat
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23274a66' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
+    }
+    .field.date-field input[type="date"]::-webkit-calendar-picker-indicator {
+      opacity: 0;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    .field textarea { min-height: 110px; resize: vertical; }
+    .field.full { grid-column: 1 / -1; }
+    .room-types {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.6rem;
+      margin-top: 0.2rem;
+    }
+    .room-type {
+      border: 1px solid #cfe0ef;
+      border-radius: 12px;
+      background: #f7fbff;
+      padding: 0.65rem;
+      cursor: pointer;
+      transition: border-color .2s ease, background-color .2s ease;
+    }
+    .room-type input { margin-right: 0.4rem; }
+    .room-type strong { display: block; }
+    .room-type small { color: #4a6376; font-size: 0.8rem; }
+    .room-type.active {
+      border-color: #0a5d8f;
+      background: #eaf5ff;
+    }
+    .form-actions {
+      margin-top: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .rez-submit {
+      border: 0;
+      border-radius: 999px;
+      background: #0a5d8f;
+      color: #fff;
+      font-weight: 800;
+      padding: 0.72rem 1.2rem;
+      cursor: pointer;
+    }
+    .rez-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .rez-status {
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+    .rez-status.success { color: #177245; }
+    .rez-status.error { color: #b02121; }
+    .summary-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0.45rem;
+    }
+    .summary-list li {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed #d7e4f0;
+      padding-bottom: 0.35rem;
+      font-size: 0.92rem;
+      color: #315069;
+    }
+    .summary-price {
+      margin-top: 0.85rem;
+      padding: 0.8rem;
+      border-radius: 12px;
+      border: 1px solid #cfe0ef;
+      background: #f5faff;
+      font-weight: 800;
+      color: #10324a;
+    }
+    .notice {
+      font-size: 0.82rem;
+      color: #4d6477;
+      margin-top: 0.55rem;
+    }
+    .rez-room-showcase {
+      margin-top: 1rem;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+    }
+    .rez-room-item {
+      border: 1px solid #d8e6f3;
+      border-radius: 14px;
+      background: #fff;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(10, 32, 51, 0.08);
+      display: flex;
+      flex-direction: column;
+    }
+    .rez-room-item img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+    }
+    .rez-room-body {
+      padding: 0.78rem;
+      display: grid;
+      gap: 0.42rem;
+    }
+    .rez-room-body h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+    .rez-room-price {
+      color: #0c456d;
+      font-weight: 800;
+    }
+    .rez-room-btn {
+      border: 1px solid #b8d0e6;
+      border-radius: 999px;
+      background: #f5faff;
+      color: #0f3d5f;
+      font-weight: 700;
+      padding: 0.42rem 0.8rem;
+      cursor: pointer;
+      width: fit-content;
+    }
+    .route-solid-nav {
+      display: flex;
+      position: static;
+      background: transparent;
+      border: 0;
+      padding: 0;
+      gap: 0.1rem;
+    }
+    @media (max-width: 980px) {
+      .rez-room-showcase { grid-template-columns: 1fr; }
+      .rez-grid { grid-template-columns: 1fr; }
+      .rez-fields { grid-template-columns: 1fr; }
+      .room-types { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 900px) {
+      .route-solid-nav {
+        display: none;
+      }
+      .header-cta {
+        display: inline-flex;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header route-solid" id="siteHeader">
+    <div class="header-shell">
+      <a href="index.html#anasayfa" class="brand">
+        <img src="assets/images/logo.png" alt="Kaizen Otel logo">
+        <span>
+          <strong>Kaizen Otel</strong>
+        </span>
+      </a>
+      <nav class="site-nav route-solid-nav">
+        <a href="index.html#anasayfa">Ana Sayfa</a>
+        <a href="index.html#hakkimizda">Hakkımızda</a>
+        <a href="index.html#odalar">Odalar</a>
+        <a href="index.html#galeri">Galeri</a>
+        <a href="index.html#iletisim">İletişim</a>
+      </nav>
+      <a class="header-cta" href="tel:+905010026633">+90 501 002 6633</a>
+    </div>
+  </header>
+
+  <main class="rez-shell">
+    <section class="rez-hero">
+      <h1>Rezervasyon Yap</h1>
+      <p>
+        Giriş-çıkış tarihlerinizi ve oda tercihlerinizi girin. Talebiniz doğrudan otel e-posta sistemine iletilir.
+      </p>
+    </section>
+
+    <section class="rez-room-showcase">
+      <article class="rez-room-item">
+        <img src="assets/images/standartt.jpg" alt="Tek kişilik oda" loading="lazy">
+        <div class="rez-room-body">
+          <h3>Tek Kişilik Oda</h3>
+          <p>İş seyahatleri için sade ve kompakt kullanım.</p>
+          <span class="rez-room-price">2.000 TL / gece</span>
+          <button class="rez-room-btn" type="button" data-select-room="Tek Kişilik Oda">Bu odayı seç</button>
+        </div>
+      </article>
+      <article class="rez-room-item">
+        <img src="assets/images/double.jpg" alt="2 kişilik oda" loading="lazy">
+        <div class="rez-room-body">
+          <h3>2 Kişilik Oda</h3>
+          <p>Çift konaklamasında dengeli alan ve konfor.</p>
+          <span class="rez-room-price">3.500 TL / gece</span>
+          <button class="rez-room-btn" type="button" data-select-room="2 Kişilik Oda">Bu odayı seç</button>
+        </div>
+      </article>
+      <article class="rez-room-item">
+        <img src="assets/images/twinsuit.jpeg" alt="3 kişilik oda" loading="lazy">
+        <div class="rez-room-body">
+          <h3>3 Kişilik Oda</h3>
+          <p>Aileler için geniş ve esnek konaklama düzeni.</p>
+          <span class="rez-room-price">5.000 TL / gece</span>
+          <button class="rez-room-btn" type="button" data-select-room="3 Kişilik Oda">Bu odayı seç</button>
+        </div>
+      </article>
+    </section>
+
+    <section class="rez-grid">
+      <article class="rez-card">
+        <h2>Rezervasyon Formu</h2>
+        <p>Bilgilerinizi eksiksiz girmeniz, hızlı geri dönüş için önemlidir.</p>
+
+        <form id="reservationForm" novalidate>
+          <div class="rez-fields">
+            <div class="field date-field">
+              <label for="checkIn">Giriş Tarihi</label>
+              <input type="date" id="checkIn" name="checkIn" required>
+            </div>
+            <div class="field date-field">
+              <label for="checkOut">Çıkış Tarihi</label>
+              <input type="date" id="checkOut" name="checkOut" required>
+            </div>
+            <div class="field">
+              <label for="adults">Yetişkin</label>
+              <input type="number" id="adults" name="adults" min="1" max="8" value="2" required>
+            </div>
+            <div class="field">
+              <label for="children">Çocuk</label>
+              <input type="number" id="children" name="children" min="0" max="6" value="0">
+            </div>
+            <div class="field">
+              <label for="roomCount">Oda Sayısı</label>
+              <input type="number" id="roomCount" name="roomCount" min="1" max="5" value="1" required>
+            </div>
+            <div class="field">
+              <label for="arrivalTime">Tahmini Varış</label>
+              <select id="arrivalTime" name="arrivalTime">
+                <option value="">Belirtmek istemiyorum</option>
+                <option>12:00 - 15:00</option>
+                <option>15:00 - 18:00</option>
+                <option>18:00 - 21:00</option>
+                <option>21:00 sonrası</option>
+              </select>
+            </div>
+
+            <div class="field full">
+              <label>Oda Tipi</label>
+              <div class="room-types" id="roomTypes">
+                <label class="room-type active">
+                  <input type="radio" name="roomType" value="Tek Kişilik Oda" data-price="2000" checked>
+                  <strong>Tek Kişilik Oda</strong>
+                  <small>2000 TL / gece</small>
+                </label>
+                <label class="room-type">
+                  <input type="radio" name="roomType" value="2 Kişilik Oda" data-price="3500">
+                  <strong>2 Kişilik Oda</strong>
+                  <small>3500 TL / gece</small>
+                </label>
+                <label class="room-type">
+                  <input type="radio" name="roomType" value="3 Kişilik Oda" data-price="5000">
+                  <strong>3 Kişilik Oda</strong>
+                  <small>5000 TL / gece</small>
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="fullName">Ad Soyad</label>
+              <input type="text" id="fullName" name="fullName" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="email">E-posta</label>
+              <input type="email" id="email" name="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="countryCode">Ülke Kodu</label>
+              <select id="countryCode" name="countryCode">
+                <option value="+90">+90 (Türkiye)</option>
+                <option value="+1">+1 (ABD/Kanada)</option>
+                <option value="+44">+44 (İngiltere)</option>
+                <option value="+49">+49 (Almanya)</option>
+                <option value="+7">+7</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="phone">Telefon</label>
+              <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="5XX XXX XX XX" required>
+            </div>
+
+            <div class="field full">
+              <label for="note">Notunuz</label>
+              <textarea id="note" name="note" placeholder="Özel isteğiniz varsa yazabilirsiniz."></textarea>
+            </div>
+
+            <div class="field full" style="display:none;">
+              <label for="company">Company</label>
+              <input type="text" id="company" name="company" autocomplete="off" tabindex="-1">
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="rez-submit" id="submitBtn" type="submit">Rezervasyon Gönder</button>
+            <span class="rez-status" id="formStatus"></span>
+          </div>
+          <p class="notice">
+            Gönderim sonrası rezervasyon detayınız Kaizen Otel'e iletilir ve size "rezervasyonunuz onay aşamasına geçti" bilgilendirme e-postası gönderilir.
+          </p>
+        </form>
+      </article>
+
+      <aside class="rez-card">
+        <h2>Rezervasyon Özeti</h2>
+        <ul class="summary-list">
+          <li><span>Giriş</span><strong id="sumCheckIn">-</strong></li>
+          <li><span>Çıkış</span><strong id="sumCheckOut">-</strong></li>
+          <li><span>Gece</span><strong id="sumNights">1</strong></li>
+          <li><span>Yetişkin / Çocuk</span><strong id="sumGuests">2 / 0</strong></li>
+          <li><span>Oda Tipi</span><strong id="sumRoomType">Tek Kişilik Oda</strong></li>
+          <li><span>Oda Sayısı</span><strong id="sumRoomCount">1</strong></li>
+        </ul>
+        <div class="summary-price">
+          Tahmini Toplam: <span id="sumTotal">2000</span> TL
+        </div>
+        <p class="notice">
+          Tahmini tutar bilgilendirme amaçlıdır. Nihai fiyatlandırma, otel onayıyla netleşir.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-bottom" style="padding-top:1rem;">
+      <span>© <span id="yearNow"></span> Kaizen Otel</span>
+      <span><a href="kaizen-gizlilik.html">Gizlilik Politikası</a></span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/tr.js" defer></script>
+  <script src="assets/js/rezervasyon.js" defer></script>
+</body>
+</html>
+

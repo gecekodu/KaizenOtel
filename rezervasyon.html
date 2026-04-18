@@ -225,27 +225,11 @@
       cursor: pointer;
       width: fit-content;
     }
-    .route-solid-nav {
-      display: flex;
-      position: static;
-      background: transparent;
-      border: 0;
-      padding: 0;
-      gap: 0.1rem;
-    }
     @media (max-width: 980px) {
       .rez-room-showcase { grid-template-columns: 1fr; }
       .rez-grid { grid-template-columns: 1fr; }
       .rez-fields { grid-template-columns: 1fr; }
       .room-types { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 900px) {
-      .route-solid-nav {
-        display: none;
-      }
-      .header-cta {
-        display: inline-flex;
-      }
     }
   </style>
 </head>
@@ -258,7 +242,12 @@
           <strong>Kaizen Otel</strong>
         </span>
       </a>
-      <nav class="site-nav route-solid-nav">
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Menüyü aç" aria-expanded="false" aria-controls="siteNav">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="site-nav" id="siteNav" aria-label="Ana menü">
         <a href="index.html#anasayfa">Ana Sayfa</a>
         <a href="index.html#hakkimizda">Hakkımızda</a>
         <a href="index.html#odalar">Odalar</a>
@@ -272,8 +261,24 @@
           </span>
           Haberler
         </a>
+        <details class="nav-group">
+          <summary>Önerilerimiz</summary>
+          <div class="nav-group-menu">
+            <a href="mersin-gezilecek-yerler.html">Gezi Rehberi</a>
+            <a href="restoranrehberi.html">Restoran Rehberi</a>
+          </div>
+        </details>
       </nav>
-      <a class="header-cta" href="tel:+905010026633">+90 501 002 6633</a>
+
+      <div class="header-actions">
+        <button class="search-trigger" id="searchTrigger" type="button" aria-label="Site içinde ara">
+          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="11" cy="11" r="6.5"></circle>
+            <line x1="16" y1="16" x2="21" y2="21"></line>
+          </svg>
+        </button>
+        <a class="header-cta" href="rezervasyon.html">Rezervasyon</a>
+      </div>
     </div>
   </header>
 

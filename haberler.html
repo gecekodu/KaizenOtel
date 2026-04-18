@@ -49,7 +49,15 @@
         </details>
       </nav>
 
-      <a class="header-cta" href="rezervasyon.html">Rezervasyon</a>
+      <div class="header-actions">
+        <button class="search-trigger" id="searchTrigger" type="button" aria-label="Site içinde ara">
+          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="11" cy="11" r="6.5"></circle>
+            <line x1="16" y1="16" x2="21" y2="21"></line>
+          </svg>
+        </button>
+        <a class="header-cta" href="rezervasyon.html">Rezervasyon</a>
+      </div>
     </div>
   </header>
 
@@ -61,26 +69,59 @@
         Erdemli bültenimizi bu sayfadan doğrudan okuyabilirsiniz. PDF görüntüleyici sayesinde haber dökümanına
         masaüstü ve mobilde hızlıca erişebilirsiniz.
       </p>
-      
+      <div class="news-meta" aria-label="Haber bülteni bilgileri">
+        <span class="news-chip">Aylık Bülten</span>
+        <span class="news-chip">PDF Format</span>
+        <span class="news-chip">Mobil Uyumlu</span>
+      </div>
     </section>
 
-    <section class="news-viewer" aria-label="Haber PDF görüntüleyici">
+    <section class="news-viewer" id="newsViewerCard" aria-label="Haber görüntüleyici">
       <div class="news-viewer-top">
         <h2 class="news-viewer-title"><span class="news-dot" aria-hidden="true"></span>Haber Bülteni</h2>
-        <a class="news-viewer-link" href="assets/pdf/Haber.pdf" target="_blank" rel="noopener">Yeni sekmede aç</a>
+        <div class="news-viewer-actions">
+          <button class="news-viewer-btn" type="button" id="newsReloadBtn">Yenile</button>
+          <button class="news-viewer-btn" type="button" id="newsFullscreenBtn">Tam Ekran</button>
+          <a class="news-viewer-link" href="assets/pdf/Haber.pdf" target="_blank" rel="noopener">Yeni Sekmede Aç</a>
+        </div>
       </div>
 
-      <iframe
-        class="news-frame"
-        src="assets/pdf/Haber.pdf#view=FitH"
-        title="Kaizen Otel Haber PDF"
-        loading="lazy">
-      </iframe>
+      <div class="news-viewer-layout">
+        <div class="news-frame-shell is-loading" id="newsFrameShell">
+          <div class="news-frame-loader" id="newsFrameLoader" aria-hidden="true">
+            <span class="loader-dot"></span>
+            <span class="loader-dot"></span>
+            <span class="loader-dot"></span>
+          </div>
+          <div class="news-canvas-wrap" id="newsCanvasWrap">
+            <canvas class="news-frame" id="newsCanvas" aria-label="Haber bülteni sayfa görüntüsü"></canvas>
+          </div>
+          <div class="news-reading-toolbar" aria-label="Okuma ayarları">
+            <div class="news-zoom-controls" role="group" aria-label="Yakınlaştırma kontrolleri">
+              <button class="news-zoom-btn" type="button" id="newsZoomOutBtn" aria-label="Uzaklaştır">-</button>
+              <p class="news-zoom-level" id="newsZoomLevel" aria-live="polite">100%</p>
+              <button class="news-zoom-btn" type="button" id="newsZoomInBtn" aria-label="Yakınlaştır">+</button>
+              <button class="news-zoom-fit" type="button" id="newsZoomFitBtn">Ekrana Sığdır</button>
+            </div>
+          </div>
+          <div class="news-reader-controls" aria-label="Sayfa kontrolleri">
+            <button class="news-page-btn" type="button" id="newsPrevBtn">Önceki</button>
+            <p class="news-page-indicator" id="newsPageIndicator" aria-live="polite">Sayfa 1 / 1</p>
+            <button class="news-page-btn" type="button" id="newsNextBtn">Sonraki</button>
+          </div>
+        </div>
 
-      <p class="news-fallback">
-        Tarayıcınız gömülü PDF gösterimini desteklemiyorsa
-        <a href="assets/pdf/Haber.pdf" target="_blank" rel="noopener">PDF dosyasını buradan açabilirsiniz</a>.
-      </p>
+        <aside class="news-panel" aria-label="Görüntüleyici yardım paneli">
+          <p class="news-panel-title">Turizm Gündemi</p>
+          <ul class="news-panel-list">
+            <li>Mersin kıyı rotaları ve gezi önerileri.</li>
+            <li>Şehirde öne çıkan lezzet ve mekan haberleri.</li>
+            <li>Kaizen Otel çevresindeki sezon etkinlikleri.</li>
+          </ul>
+          <a class="news-panel-download" href="assets/pdf/Haber.pdf" target="_blank" rel="noopener">Bülteni Aç</a>
+          <p class="news-panel-status" id="newsStatus" aria-live="polite">Dosya yükleniyor...</p>
+        </aside>
+      </div>
     </section>
   </main>
 
@@ -97,11 +138,37 @@
     </div>
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script>
     (function () {
+      const PDF_SOURCE = "assets/pdf/Haber.pdf";
       const nav = document.getElementById("siteNav");
       const toggle = document.getElementById("menuToggle");
       const yearNow = document.getElementById("yearNow");
+      const newsFrameShell = document.getElementById("newsFrameShell");
+      const newsStatus = document.getElementById("newsStatus");
+      const reloadBtn = document.getElementById("newsReloadBtn");
+      const fullscreenBtn = document.getElementById("newsFullscreenBtn");
+      const viewerCard = document.getElementById("newsViewerCard");
+      const canvasWrap = document.getElementById("newsCanvasWrap");
+      const canvas = document.getElementById("newsCanvas");
+      const prevBtn = document.getElementById("newsPrevBtn");
+      const nextBtn = document.getElementById("newsNextBtn");
+      const pageIndicator = document.getElementById("newsPageIndicator");
+      const zoomOutBtn = document.getElementById("newsZoomOutBtn");
+      const zoomInBtn = document.getElementById("newsZoomInBtn");
+      const zoomFitBtn = document.getElementById("newsZoomFitBtn");
+      const zoomLevel = document.getElementById("newsZoomLevel");
+
+      let pdfDoc = null;
+      let currentPage = 1;
+      let totalPages = 1;
+      let renderTask = null;
+      let resizeTimer = null;
+      let userZoom = 1;
+      const MIN_ZOOM = 0.75;
+      const MAX_ZOOM = 2.2;
+      const ZOOM_STEP = 0.15;
 
       if (yearNow) {
         yearNow.textContent = String(new Date().getFullYear());
@@ -131,7 +198,209 @@
         if (window.innerWidth > 880) {
           closeMenu();
         }
+
+        if (pdfDoc) {
+          clearTimeout(resizeTimer);
+          resizeTimer = window.setTimeout(function () {
+            renderPage(currentPage);
+          }, 140);
+        }
       });
+
+      function updatePageControls() {
+        if (!pageIndicator || !prevBtn || !nextBtn) return;
+        pageIndicator.textContent = "Sayfa " + currentPage + " / " + totalPages;
+        prevBtn.disabled = currentPage <= 1;
+        nextBtn.disabled = currentPage >= totalPages;
+      }
+
+      function getPageScale(page) {
+        if (!canvasWrap) return 1;
+        const viewport = page.getViewport({ scale: 1 });
+        const isMobile = window.innerWidth <= 768;
+        const horizontalPadding = isMobile ? 14 : 24;
+        const availableWidth = Math.max(220, canvasWrap.clientWidth - horizontalPadding);
+        const fitScale = availableWidth / viewport.width;
+        const boostedScale = isMobile ? fitScale * 1.24 : fitScale;
+        const minScale = 0.5;
+        const maxScale = isMobile ? 2.8 : 2.2;
+        const baseScale = Math.min(maxScale, Math.max(minScale, boostedScale));
+        return baseScale * userZoom;
+      }
+
+      function updateZoomUi() {
+        if (!zoomLevel || !zoomOutBtn || !zoomInBtn) return;
+        const percent = Math.round(userZoom * 100);
+        zoomLevel.textContent = percent + "%";
+        zoomOutBtn.disabled = userZoom <= MIN_ZOOM;
+        zoomInBtn.disabled = userZoom >= MAX_ZOOM;
+      }
+
+      function setZoom(nextZoom) {
+        const clamped = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, nextZoom));
+        userZoom = Number(clamped.toFixed(2));
+        updateZoomUi();
+        if (pdfDoc) {
+          renderPage(currentPage);
+        }
+      }
+
+      async function renderPage(pageNumber) {
+        if (!pdfDoc || !canvas || !newsFrameShell) return;
+
+        const safePage = Math.min(Math.max(1, pageNumber), totalPages);
+        currentPage = safePage;
+        updatePageControls();
+
+        if (renderTask) {
+          renderTask.cancel();
+        }
+
+        const page = await pdfDoc.getPage(currentPage);
+        const scale = getPageScale(page);
+        const viewport = page.getViewport({ scale: scale });
+        const pixelRatio = window.devicePixelRatio || 1;
+        const context = canvas.getContext("2d", { alpha: false });
+        if (!context) return;
+
+        canvas.width = Math.floor(viewport.width * pixelRatio);
+        canvas.height = Math.floor(viewport.height * pixelRatio);
+        canvas.style.width = Math.floor(viewport.width) + "px";
+        canvas.style.height = Math.floor(viewport.height) + "px";
+
+        context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        context.clearRect(0, 0, viewport.width, viewport.height);
+
+        renderTask = page.render({ canvasContext: context, viewport: viewport });
+
+        try {
+          await renderTask.promise;
+        } catch (error) {
+          if (!error || error.name !== "RenderingCancelledException") {
+            throw error;
+          }
+          return;
+        }
+
+        newsFrameShell.classList.remove("is-loading");
+        if (newsStatus) {
+          newsStatus.textContent = "Bülten hazır";
+        }
+        updateZoomUi();
+      }
+
+      async function loadPdfDocument() {
+        if (!newsFrameShell) return;
+
+        if (!window.pdfjsLib) {
+          window.location.href = PDF_SOURCE;
+          return;
+        }
+
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+        newsFrameShell.classList.add("is-loading");
+        if (newsStatus) {
+          newsStatus.textContent = "Bülten yükleniyor...";
+        }
+
+        try {
+          const loadingTask = window.pdfjsLib.getDocument(PDF_SOURCE + "?t=" + Date.now());
+          pdfDoc = await loadingTask.promise;
+          totalPages = pdfDoc.numPages || 1;
+          currentPage = 1;
+          userZoom = window.innerWidth <= 768 ? 1.12 : 1;
+          updatePageControls();
+          updateZoomUi();
+          await renderPage(currentPage);
+        } catch (error) {
+          newsFrameShell.classList.remove("is-loading");
+          window.location.href = PDF_SOURCE;
+        }
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener("click", function () {
+          if (!pdfDoc || currentPage <= 1) return;
+          renderPage(currentPage - 1);
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener("click", function () {
+          if (!pdfDoc || currentPage >= totalPages) return;
+          renderPage(currentPage + 1);
+        });
+      }
+
+      if (zoomOutBtn) {
+        zoomOutBtn.addEventListener("click", function () {
+          setZoom(userZoom - ZOOM_STEP);
+        });
+      }
+
+      if (zoomInBtn) {
+        zoomInBtn.addEventListener("click", function () {
+          setZoom(userZoom + ZOOM_STEP);
+        });
+      }
+
+      if (zoomFitBtn) {
+        zoomFitBtn.addEventListener("click", function () {
+          setZoom(1);
+        });
+      }
+
+      if (reloadBtn) {
+        reloadBtn.addEventListener("click", function () {
+          newsFrameShell.classList.add("is-loading");
+          if (newsStatus) {
+            newsStatus.textContent = "Bülten yenileniyor...";
+          }
+          loadPdfDocument();
+        });
+      }
+
+      if (fullscreenBtn && viewerCard) {
+        fullscreenBtn.addEventListener("click", function () {
+          if (document.fullscreenElement) {
+            document.exitFullscreen().catch(function () {});
+            return;
+          }
+
+          if (viewerCard.requestFullscreen) {
+            viewerCard.requestFullscreen().catch(function () {});
+          }
+        });
+
+        document.addEventListener("fullscreenchange", function () {
+          const isFullscreen = Boolean(document.fullscreenElement);
+          fullscreenBtn.textContent = isFullscreen ? "Tam Ekrandan Çık" : "Tam Ekran";
+          if (newsStatus) {
+            newsStatus.textContent = isFullscreen ? "Tam ekran modu aktif" : "Bülten hazır";
+          }
+
+          if (pdfDoc) {
+            renderPage(currentPage);
+          }
+        });
+
+        if (canvasWrap) {
+          canvasWrap.addEventListener(
+            "wheel",
+            function (event) {
+              if (!(event.ctrlKey || event.metaKey)) return;
+              event.preventDefault();
+              const direction = event.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP;
+              setZoom(userZoom + direction);
+            },
+            { passive: false }
+          );
+        }
+
+        updateZoomUi();
+      }
+
+      loadPdfDocument();
     })();
   </script>
 </body>

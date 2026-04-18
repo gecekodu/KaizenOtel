@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Haberler | Kaizen Otel</title>
+  <meta name="description" content="Kaizen Otel haber dökümanı. Güncel duyuruları ve haber içeriklerini PDF görüntüleyici üzerinden okuyabilirsiniz.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://kaizenotel.com/haberler.html">
+  <link rel="icon" href="assets/images/icon.png" sizes="128x128">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/app.css">
+  <link rel="stylesheet" href="assets/css/news-page.css">
+</head>
+<body class="news-page">
+  <header class="site-header route-solid" id="siteHeader">
+    <div class="header-shell">
+      <a href="index.html#anasayfa" class="brand">
+        <img src="assets/images/logo.png" alt="Kaizen Otel logo">
+        <span><strong>Kaizen Otel</strong></span>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Menüyü aç" aria-expanded="false" aria-controls="siteNav">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="site-nav" id="siteNav" aria-label="Ana menü">
+        <a href="index.html#anasayfa">Ana Sayfa</a>
+        <a href="index.html#hakkimizda">Hakkımızda</a>
+        <a href="index.html#odalar">Odalar</a>
+        <a href="index.html#galeri">Galeri</a>
+        <a href="index.html#iletisim">İletişim</a>
+        <a href="haberler.html" class="nav-news-link active" aria-current="page">
+          <span class="nav-news-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M4 3h16a1 1 0 0 1 1 1v14a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V4a1 1 0 0 1 1-1zm1 2v13a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5zm3 3h8v2H8zm0 4h8v2H8zm0 4h5v2H8z"/>
+            </svg>
+          </span>
+          Haberler
+        </a>
+        <details class="nav-group">
+          <summary>Önerilerimiz</summary>
+          <div class="nav-group-menu">
+            <a href="mersin-gezilecek-yerler.html">Gezi Rehberi</a>
+            <a href="restoranrehberi.html">Restoran Rehberi</a>
+          </div>
+        </details>
+      </nav>
+
+      <a class="header-cta" href="rezervasyon.html">Rezervasyon</a>
+    </div>
+  </header>
+
+  <main class="news-main">
+    <section class="news-hero">
+      <p class="news-eyebrow">Kaizen Otel</p>
+      <h1 class="news-title">Haberler ve Duyurular</h1>
+      <p class="news-summary">
+        Kurumsal bültenimizi bu sayfadan doğrudan okuyabilirsiniz. PDF görüntüleyici sayesinde haber dökümanına
+        masaüstü ve mobilde hızlıca erişebilirsiniz.
+      </p>
+      <div class="news-meta">
+        <span class="news-chip">Canlı PDF Önizleme</span>
+        <span class="news-chip">Mobil Uyumlu Okuma</span>
+        <span class="news-chip">Tek Tık İndirme</span>
+      </div>
+    </section>
+
+    <section class="news-viewer" aria-label="Haber PDF görüntüleyici">
+      <div class="news-viewer-top">
+        <h2 class="news-viewer-title"><span class="news-dot" aria-hidden="true"></span>Haber Bülteni</h2>
+        <a class="news-viewer-link" href="assets/pdf/Haber.pdf" target="_blank" rel="noopener">Yeni sekmede aç</a>
+      </div>
+
+      <iframe
+        class="news-frame"
+        src="assets/pdf/Haber.pdf#view=FitH"
+        title="Kaizen Otel Haber PDF"
+        loading="lazy">
+      </iframe>
+
+      <p class="news-fallback">
+        Tarayıcınız gömülü PDF gösterimini desteklemiyorsa
+        <a href="assets/pdf/Haber.pdf" target="_blank" rel="noopener">PDF dosyasını buradan açabilirsiniz</a>.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer guide-footer">
+    <div class="footer-shell">
+      <section>
+        <h3>Kaizen Otel</h3>
+        <p>Haber içeriklerimizi bu alanda güncel tutuyoruz.</p>
+      </section>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="yearNow"></span> Kaizen Otel</span>
+      <span><a href="rezervasyon.html">Rezervasyon</a></span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const nav = document.getElementById("siteNav");
+      const toggle = document.getElementById("menuToggle");
+      const yearNow = document.getElementById("yearNow");
+
+      if (yearNow) {
+        yearNow.textContent = String(new Date().getFullYear());
+      }
+
+      function closeMenu() {
+        if (!nav || !toggle) return;
+        nav.classList.remove("open");
+        toggle.setAttribute("aria-expanded", "false");
+        nav.querySelectorAll(".nav-group[open]").forEach((group) => group.removeAttribute("open"));
+      }
+
+      if (toggle && nav) {
+        toggle.addEventListener("click", function () {
+          const opened = nav.classList.toggle("open");
+          toggle.setAttribute("aria-expanded", String(opened));
+        });
+      }
+
+      document.addEventListener("click", function (event) {
+        if (!(event.target instanceof Element)) return;
+        if (event.target.closest(".header-shell")) return;
+        closeMenu();
+      });
+
+      window.addEventListener("resize", function () {
+        if (window.innerWidth > 880) {
+          closeMenu();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
